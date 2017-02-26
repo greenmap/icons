@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Green Map Icon Tool</title>
+    <script src="http://code.angularjs.org/snapshot/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.0/clipboard.min.js"></script>
+    <script src="ngclipboard.min.js"></script>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/jumbotron-narrow.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet">
+    <link rel="shortcut icon" href="http://greenmap.org/greenhouse/files/greenmapnew_favicon.ico" type="image/x-icon">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body ng-app="myApp">
+    <div ng-init="icons = [
+
+{name:'Farmers/Local Market', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/farmerslocalmarket.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Healthy Dining', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/healthydining.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Eco-Agriculture/Permaculture', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/ecoagriculturepermaculture.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Organic/Local Food', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/organiclocalfood.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Eco-Products', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/ecoproducts.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Green Enterprise', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/greenenterprise.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Green Store', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/greenstore.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Local Business', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/localbusiness.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Reuse Shop/Market', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/reuseshopmarket.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Fair Trade', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/fairtrade.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Responsible Company', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/responsiblecompany.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Social Enterprise', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/socialenterprise.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Ecotourism Resource', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/ecotourismresource.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Reuse', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/reuse.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Recycling', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/recycling.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Rental/Share', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/rentalshare.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Repair Shop', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/repairshop.png', genre:'Sustainable Living', category:'Green Economy'},
+
+{name:'Solar Energy Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/solarenergysite.png', genre:'Sustainable Living', category:'Technology and Design'},
+
+{name:'Wind Energy Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/windenergysite.png', genre:'Sustainable Living', category:'Technology and Design'},
+
+{name:'Water Energy Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/waterenergysite.png', genre:'Sustainable Living', category:'Technology and Design'},
+
+{name:'Water Recycling', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/waterrecycling.png', genre:'Sustainable Living', category:'Technology and Design'},
+
+{name:'Geothermal/Ground Heat Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/geothermalgroundheatsite.png', genre:'Sustainable Living', category:'Technology and Design'},
+
+{name:'Green Building', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/greenbuilding.png', genre:'Sustainable Living', category:'Technology and Design'},
+
+{name:'Green Roof', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/greenroof.png', genre:'Sustainable Living', category:'Technology and Design'},
+
+{name:'Self-Built House', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/selfbuilthouse.png', genre:'Sustainable Living', category:'Technology and Design'},
+
+{name:'Composting Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/compostingsite.png', genre:'Sustainable Living', category:'Technology and Design'},
+
+{name:'Scientific Research Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/scientificresearchsite.png', genre:'Sustainable Living', category:'Technology and Design'},
+
+{name:'Green Technology', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/greentechnology.png', genre:'Sustainable Living', category:'Technology and Design'},
+
+{name:'Greenhouse Gas Reduction', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/greenhousegasreduction.png', genre:'Sustainable Living', category:'Technology and Design'},
+
+{name:'Energy Conservation', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/energyconservation.png', genre:'Sustainable Living', category:'Technology and Design'},
+
+{name:'Paper Reduction Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/paperreductionsite.png', genre:'Sustainable Living', category:'Technology and Design'},
+
+{name:'Green Cleaning', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/greencleaning.png', genre:'Sustainable Living', category:'Technology and Design'},
+
+{name:'Bicycle Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/bicyclesite.png', genre:'Sustainable Living', category:'Mobility'},
+
+{name:'Bicycle Path <', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/bicyclepathwest.png', genre:'Sustainable Living', category:'Mobility'},
+
+{name:'Bicycle Path >', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/bicyclepatheast.png', genre:'Sustainable Living', category:'Mobility'},
+
+{name:'Bicycle Parking', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/bicycleparking.png', genre:'Sustainable Living', category:'Mobility'},
+
+{name:'Pedestrian Friendly', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/pedestrianfriendly.png', genre:'Sustainable Living', category:'Mobility'},
+
+{name:'Wheelchair Accessible', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/wheelchairaccessible.png', genre:'Sustainable Living', category:'Mobility'},
+
+{name:'Public/Mass Transportation', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/publicmasstransportation.png', genre:'Sustainable Living', category:'Mobility'},
+
+{name:'Light Rail/Bus Rapid Transit', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/lightrailbusrapidtransit.png', genre:'Sustainable Living', category:'Mobility'},
+
+{name:'Water Transport', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/watertransport.png', genre:'Sustainable Living', category:'Mobility'},
+
+{name:'Alternative Fuel/Vehicles', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/alternativefuelvehicles.png', genre:'Sustainable Living', category:'Mobility'},
+
+{name:'Park \'N Ride Facility', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/parknridefacility.png', genre:'Sustainable Living', category:'Mobility'},
+
+{name:'Traffic Hazard', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/traffichazard.png', genre:'Sustainable Living', category:'Mobility'},
+
+{name:'Caution Zone', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/cautionzone.png', genre:'Sustainable Living', category:'Mobility'},
+
+{name:'Blight Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/blightsite.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Air Pollution', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/airpollution.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Water Pollution Source', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/waterpollutionsource.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Waste Dump', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/wastedump.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Contaminated Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/contaminatedsite.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Brownfield Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/brownfieldsite.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Vulnerable Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/vulnerablesite.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Habitat at Risk', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/habitatatrisk.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Deforestation', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/deforestation.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Climate Changed Area', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/climatechangedarea.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Disaster Area', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/disasterarea.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Abandoned Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/abandonedsite.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Unhealthy Spot', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/unhealthyspot.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Noise Pollution', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/noisepollution.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Airport', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/airport.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Oil/Gas Facility', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/oilgasfacility.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Nuclear Facilities & Waste Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/nuclearfacilitiesandwastesite.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Mining Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/miningsite.png', genre:'Sustainable Living', category:'Hazards and Challenges'},
+
+{name:'Waterfront/Riverside Park', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/waterfrontriversidepark.png', genre:'Nature', category:'Land and Water'},
+
+{name:'Water Feature', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/waterfeature.png', genre:'Nature', category:'Land and Water'},
+
+{name:'Wetlands', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/wetlands.png', genre:'Nature', category:'Land and Water'},
+
+{name:'Drinking Water Source', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/drinkingwatersource.png', genre:'Nature', category:'Land and Water'},
+
+{name:'Natural Corridor/Greenway', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/naturalcorridorgreenway.png', genre:'Nature', category:'Land and Water'},
+
+{name:'Geological Feature', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/geologicalfeature.png', genre:'Nature', category:'Land and Water'},
+
+{name:'Eco-Design/Planning Feature', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/ecodesignplanningfeature.png', genre:'Nature', category:'Land and Water'},
+
+{name:'Cleaned-Up/Rebuilt Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/cleaneduprebuiltsite.png', genre:'Nature', category:'Land and Water'},
+
+{name:'Future Redevelopment Space', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/futureredevelopment.png', genre:'Nature', category:'Land and Water'},
+
+{name:'Eco Landscaping', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/ecolandscaping.png', genre:'Nature', category:'Land and Water'},
+
+{name:'Shaded Boulevard', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/shadedboulevard.png', genre:'Nature', category:'Land and Water'},
+
+{name:'Public Forest/Natural Area', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/publicforestnaturalarea.png', genre:'Nature', category:'Flora'},
+
+{name:'Special Tree', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/specialtree.png', genre:'Nature', category:'Flora'},
+
+{name:'Native Forests/Plants', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/nativeforestplants.png', genre:'Nature', category:'Flora'},
+
+{name:'Garden', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/garden.png', genre:'Nature', category:'Flora'},
+
+{name:'Community Garden', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/communitygarden.png', genre:'Nature', category:'Flora'},
+
+{name:'Spring Blossoms', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/springblossoms.png', genre:'Nature', category:'Flora'},
+
+{name:'Autumn Leaves', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/autumnleaves.png', genre:'Nature', category:'Flora'},
+
+{name:'Rapidly Renewable Plants', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/rapidlyrenewableplants.png', genre:'Nature', category:'Flora'},
+
+{name:'Food Gathering Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/foodgatheringsite.png', genre:'Nature', category:'Flora'},
+
+{name:'Significant Habitat', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/significanthabitat.png', genre:'Nature', category:'Fauna'},
+
+{name:'Wildlife Habitat', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/wildlifehabitat.png', genre:'Nature', category:'Fauna'},
+
+{name:'Amphibian Habitat', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/amphibianhabitat.png', genre:'Nature', category:'Fauna'},
+
+{name:'Coastal Habitat', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/coastalhabitat.png', genre:'Nature', category:'Fauna'},
+
+{name:'Aquatic Habitat', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/aquatichabitat.png', genre:'Nature', category:'Fauna'},
+
+{name:'Wildlife Center/Zoo', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/wildlifecenterzoo.png', genre:'Nature', category:'Fauna'},
+
+{name:'Protected/Cultivated Habitat', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/protectedcultivatedhabitat.png', genre:'Nature', category:'Fauna'},
+
+{name:'Insect Watching Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/insectwatchingsite.png', genre:'Nature', category:'Fauna'},
+
+{name:'Bird and Wildlife Watching', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/birdandwildlifewatching.png', genre:'Nature', category:'Fauna'},
+
+{name:'Duck Pond', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/duckpond.png', genre:'Nature', category:'Fauna'},
+
+{name:'Farm Animals', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/farmanimals.png', genre:'Nature', category:'Fauna'},
+
+{name:'Migration Zone', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/migrationzone.png', genre:'Nature', category:'Fauna'},
+
+{name:'Park/Recreation Area', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/parkrecreationarea.png', genre:'Nature', category:'Outdoor Activities'},
+
+{name:'Public Space/Square', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/publicspacesquare.png', genre:'Nature', category:'Outdoor Activities'},
+
+{name:'Sport Site/Play with Nature', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/sportsiteplaywithnature.png', genre:'Nature', category:'Outdoor Activities'},
+
+{name:'Eco-Tour/Nature Walk', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/ecotournaturewalk.png', genre:'Nature', category:'Outdoor Activities'},
+
+{name:'Swimming', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/swimming.png', genre:'Nature', category:'Outdoor Activities'},
+
+{name:'Canoe/Kayak Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/canoekayaksite.png', genre:'Nature', category:'Outdoor Activities'},
+
+{name:'Sailing/Row Boat Launch', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/sailingrowboatlaunch.png', genre:'Nature', category:'Outdoor Activities'},
+
+{name:'Skateboard Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/skateboardsite.png', genre:'Nature', category:'Outdoor Activities'},
+
+{name:'Dog Run', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/dogrun.png', genre:'Nature', category:'Outdoor Activities'},
+
+{name:'Snow Activity Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/snowactivitysite.png', genre:'Nature', category:'Outdoor Activities'},
+
+{name:'Camping', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/camping.png', genre:'Nature', category:'Outdoor Activities'},
+
+{name:'Scenic Vista', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/scenicvista.png', genre:'Nature', category:'Outdoor Activities'},
+
+{name:'Sunrise/Sunset Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/sunrisesunsetsite.png', genre:'Nature', category:'Outdoor Activities'},
+
+{name:'Star Gazing Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/stargazingsite.png', genre:'Nature', category:'Outdoor Activities'},
+
+{name:'Cultural Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/culturalsite.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Museum', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/museum.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Art Spot', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/artspot.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Cultural Performance', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/culturalperformance.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Local Music', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/localmusic.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Lively Spot', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/livelyspot.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Artisan/Art Studio', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/artisanartstudio.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Traditional Way of Life', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/traditionalwayoflife.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Historical Feature', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/historicalfeature.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Archaeological Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/archaeologicalsite.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Traditional Neighborhood', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/traditionalneighborhood.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Diverse Neighborhood', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/diverseneighborhood.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Community Center', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/communitycenter.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Child Friendly Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/childfriendlysite.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Senior Friendly Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/seniorfriendlysite.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Eco-Spiritual Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/ecospiritualsite.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Green by Design', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/greenbydesign.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Alternative Health Resource', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/alternativehealthresource.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Memorial/Site of Conscience', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/memorialsiteofconscience.png', genre:'Culture and Society', category:'Cultural character'},
+
+{name:'Eco Information', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/ecoinformation.png', genre:'Culture and Society', category:'Eco-Information'},
+
+{name:'Environmental Education', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/environmentaleducation.png', genre:'Culture and Society', category:'Eco-Information'},
+
+{name:'Green School', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/greenschool.png', genre:'Culture and Society', category:'Eco-Information'},
+
+{name:'Public Library', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/publiclibrary.png', genre:'Culture and Society', category:'Eco-Information'},
+
+{name:'Green Maps Available', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/greenmapsavailable.png', genre:'Culture and Society', category:'Eco-Information'},
+
+{name:'Independent/Eco-Media', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/independentecomedia.png', genre:'Culture and Society', category:'Eco-Information'},
+
+{name:'Online Resource', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/onlineresource.png', genre:'Culture and Society', category:'Eco-Information'},
+
+{name:'WiFi Spot', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/wifispot.png', genre:'Culture and Society', category:'Eco-Information'},
+
+{name:'Pollution Monitor', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/pollutionmonitor.png', genre:'Culture and Society', category:'Eco-Information'},
+
+{name:'Eco Certification', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/ecocertification.png', genre:'Culture and Society', category:'Eco-Information'},
+
+{name:'Special Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/specialsite.png', genre:'Culture and Society', category:'Eco-Information'},
+
+{name:'Appointment Needed', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/appointmentneeded.png', genre:'Culture and Society', category:'Eco-Information'},
+
+{name:'Eco-Justice Organization', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/ecojusticeorganization.png', genre:'Culture and Society', category:'Justice and Activism'},
+
+{name:'Eco Club/Organization', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/ecocluborganization.png', genre:'Culture and Society', category:'Justice and Activism'},
+
+{name:'Significant Organization/Agency', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/significantorganizationagency.png', genre:'Culture and Society', category:'Justice and Activism'},
+
+{name:'Volunteer Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/volunteersite.png', genre:'Culture and Society', category:'Justice and Activism'},
+
+{name:'Eco Expert', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/ecoexpert.png', genre:'Culture and Society', category:'Justice and Activism'},
+
+{name:'Social Service', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/socialservice.png', genre:'Culture and Society', category:'Justice and Activism'},
+
+{name:'Food Bank', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/foodbank.png', genre:'Culture and Society', category:'Justice and Activism'},
+
+{name:'Vote Here', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/votehere.png', genre:'Culture and Society', category:'Justice and Activism'},
+
+{name:'Free Speech Zone', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/freespeechzone.png', genre:'Culture and Society', category:'Justice and Activism'},
+
+{name:'Poor Labor Practice', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/poorlaborpractice.png', genre:'Culture and Society', category:'Justice and Activism'},
+
+{name:'Unsustainable Land Use', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/unsustainablelanduse.png', genre:'Culture and Society', category:'Justice and Activism'},
+
+{name:'Gentrification', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/gentrification.png', genre:'Culture and Society', category:'Justice and Activism'},
+
+{name:'Shanty Town', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/shantytown.png', genre:'Culture and Society', category:'Justice and Activism'},
+
+{name:'Refugee Area', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/refugeearea.png', genre:'Culture and Society', category:'Justice and Activism'},
+
+{name:'Waste Water Treament Plant', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/wastewatertreatmentplant.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+
+{name:'Energy Infrastructure', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/energyinfrastructure.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+
+{name:'Solid Waste Transfer Station', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/solidwastetransferstation.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+
+{name:'Landfill', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/landfill.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+
+{name:'Incinerator', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/incinerator.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+
+{name:'Government Office', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/governmentoffice.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+
+{name:'Hospital', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/hospital.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+
+{name:'School', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/school.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+
+{name:'Place of Worship', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/placeofworship.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+
+{name:'Cemetery', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/cemetery.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+
+{name:'Information Kiosk', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/informationkiosk.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+
+{name:'Landmark Dining/Pub', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/landmarkdiningpub.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+
+{name:'WC/Public Restroom', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/wcpublicrestroom.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+
+{name:'Prison/Detention Center', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/prisondetentioncenter.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+
+{name:'Military Site', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/militarysite.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+
+{name:'Landmark', url:'http://www.opengreenmap.org/sites/all/modules/patched/gmap/markers/ggm/landmark.png', genre:'Culture and Society', category:'Public Works and Landmarks'},
+  
+                         ]"></div>
+
+
+<div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation"><a href="http://www.greenmap.org/greenhouse/en/about/iconintro" target="_blank">About the icons</a></li>
+            <li role="presentation"><a href="http://www.greenmap.org/greenhouse/en/about" target="_blank">About Green Map</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted"><a href="http://www.greenmap.org"><img src="http://www.greenmap.org/greenhouse/images/toplogo.png" width="90px" height="57px" title="Green Map logo"></a></h3>
+      </div>
+
+      <div class="jumbotron">
+        <h1>Green Map Icons</h1>
+        <p class="lead">Use this tool to select icons to use on your Green Map</p>
+        <input ng-model="searchText" class="form-control" placeholder="Type to search icons" autofocus="autofocus">
+      </div>
+
+      <div class="row marketing">
+        <table id="searchTextResults" class="table">
+          <tr><th>Icon</th><th>Name</th><th>Category</th></tr>
+          <tr ng-repeat="icon in icons | filter:searchText">
+            <td ngclipboard data-clipboard-text="{{icon.name}}" ><img width="25px" height="40px" title="{{icon.name}} icon" ng-src="{{icon.url}}"></td>
+            <td ngclipboard data-clipboard-text="{{icon.name}}" title="Click to copy the name">{{icon.name}}</td>
+            <td>{{icon.category}}</td>
+          </tr>
+        </table>
+      </div>
+
+      <footer class="footer">
+        <p>&copy; 2016 Green Map, Inc.</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <script src="app.js"></script>    
+  </body>
+</html>
